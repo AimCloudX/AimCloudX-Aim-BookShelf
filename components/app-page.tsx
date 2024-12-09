@@ -17,16 +17,7 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { useToast } from "../hooks/use-toast";
-
-interface Book {
-  id: string;
-  title: string;
-  authors?: string[];
-  isbn: string;
-  thumbnail: string;
-  location: string;
-  ownerId?: string;
-}
+import { Book } from "@/lib/utils";
 
 export function BlockPage() {
   const [books, setBooks] = useState<Book[]>([]);
