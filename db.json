@@ -81,6 +81,66 @@
       "thumbnail": "http://books.google.com/books/content?id=JxyczwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
       "location": "owner",
       "ownerId": "ひらの"
+    },
+    {
+      "id": "0351",
+      "title": "ねこほん 猫のほんねがわかる本",
+      "isbn": "9784791683307",
+      "thumbnail": "http://books.google.com/books/content?id=Wg-QDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+      "location": "bookshelf",
+      "ownerId": null
+    },
+    {
+      "id": "1b43",
+      "title": "ねこチラ",
+      "authors": [
+        "パイインターナショナル"
+      ],
+      "isbn": "9784756253309",
+      "thumbnail": "http://books.google.com/books/content?id=VcdrzQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "location": "bookshelf",
+      "ownerId": null
+    },
+    {
+      "id": "a7a2",
+      "title": "毛布 - あなたをくるんでくれるもの",
+      "authors": [
+        "安達茉莉子"
+      ],
+      "isbn": "9784768316030",
+      "thumbnail": "http://books.google.com/books/content?id=8XbvzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "location": "bookshelf",
+      "ownerId": null
+    },
+    {
+      "id": "86dd",
+      "title": "ねこ検定 公式ガイドBOOK　中級・上級編　新版（ライブ・パブリッシング）",
+      "authors": [
+        "神保町にゃんこ堂"
+      ],
+      "isbn": "",
+      "thumbnail": "http://books.google.com/books/content?id=h1GZEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+      "location": "bookshelf",
+      "ownerId": null
+    },
+    {
+      "id": "2d8c",
+      "title": "世界のいぬ",
+      "authors": [
+        "アネット・コン"
+      ],
+      "isbn": "9784861527326",
+      "thumbnail": "http://books.google.com/books/content?id=fO_hxgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "location": "bookshelf",
+      "ownerId": null
+    },
+    {
+      "id": "029b",
+      "title": "イヌ",
+      "isbn": "9784059170495",
+      "thumbnail": "http://books.google.com/books/content?id=UsRlDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+      "location": "bookshelf",
+      "ownerId": null
     }
   ]
 }
