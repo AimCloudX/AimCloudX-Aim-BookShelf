@@ -1,138 +1,145 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { FormEvent, useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import Image from "next/image";
-import Link from "next/link";
-import { Loader2 } from "lucide-react";
+} from '@/components/ui/select'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Loader2 } from 'lucide-react'
 
 interface Book {
-  id: string;
+  id: string
   volumeInfo: {
-    title: string;
-    authors: string[];
-    publishedDate: string;
-    industryIdentifiers: { type: string; identifier: string }[];
-    imageLinks?: { thumbnail: string };
-    description: string;
-    publisher: string;
-  };
+    title: string
+    authors: string[]
+    publishedDate: string
+    industryIdentifiers: { type: string; identifier: string }[]
+    imageLinks?: { thumbnail: string }
+    description: string
+    publisher: string
+  }
 }
 
 export default function SearchPage() {
-  const [query, setQuery] = useState("");
-  const [books, setBooks] = useState<Book[]>([]);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const [location, setLocation] = useState("");
-  const [ownerId, setOwnerId] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [query, setQuery] = useState('')
+  const [books, setBooks] = useState<Book[]>([])
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
+  const [location, setLocation] = useState('')
+  const [ownerId, setOwnerId] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const searchBooks = async () => {
     if (!query.trim()) {
-      setError("検索条件を入力してください");
-      return;
+      setError('検索条件を入力してください')
+      return
     }
-    setError("");
-    setIsLoading(true);
+    setError('')
+    setIsLoading(true)
     try {
       const response = await fetch(
         `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
           query
         )}`
-      );
+      )
       if (!response.ok) {
-        throw new Error("API request failed");
+        throw new Error('API request failed')
       }
-      const data = await response.json();
-      setBooks(data.items || []);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const data = await response.json()
+      setBooks(data.items || [])
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      setError("検索中にエラーが発生しました。もう一度お試しください。");
+      setError('検索中にエラーが発生しました。もう一度お試しください。')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const addBook = async () => {
     if (!selectedBook || !location) {
-      setError("本の場所を選択してください");
-      return;
+      setError('本の場所を選択してください')
+      return
     }
-    setError("");
-    setIsLoading(true);
+    setError('')
+    setIsLoading(true)
 
     const bookData = {
       title: selectedBook.volumeInfo.title,
       authors: selectedBook.volumeInfo.authors,
       isbn:
         selectedBook.volumeInfo.industryIdentifiers?.find(
-          (id) => id.type === "ISBN_13"
-        )?.identifier || "",
-      thumbnail: selectedBook.volumeInfo.imageLinks?.thumbnail || "",
+          (id) => id.type === 'ISBN_13'
+        )?.identifier || '',
+      thumbnail: selectedBook.volumeInfo.imageLinks?.thumbnail || '',
       location,
       ownerId: ownerId.trim() || null,
-    };
+    }
 
     try {
-      const response = await fetch("http://localhost:3001/books", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('http://localhost:3001/books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookData),
-      });
+      })
       if (!response.ok) {
-        throw new Error("Failed to add book");
+        throw new Error('Failed to add book')
       }
-      setSelectedBook(null);
-      setLocation("");
-      setOwnerId("");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      setSelectedBook(null)
+      setLocation('')
+      setOwnerId('')
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      setError("本の追加中にエラーが発生しました。もう一度お試しください。");
+      setError('本の追加中にエラーが発生しました。もう一度お試しください。')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    searchBooks()
+  }
 
   return (
-    <div>
+    <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Search Books</h1>
       <Button asChild className="mb-4">
-        <Link href={"/"}>トップ画面へ</Link>
+        <Link href={'/'}>トップ画面へ</Link>
       </Button>
-      <div className="flex gap-4 mb-6">
-        <Input
-          type="text"
-          placeholder="Enter title or ISBN"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="flex-grow"
-          aria-label="Search query"
-        />
-        <Button onClick={searchBooks} disabled={isLoading}>
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            "Search"
-          )}
-        </Button>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="flex gap-4 mb-6">
+          <Input
+            type="text"
+            placeholder="Enter title or ISBN"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="flex-grow"
+            aria-label="Search query"
+          />
+          <Button onClick={searchBooks} disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              'Search'
+            )}
+          </Button>
+        </div>
+      </form>
       {error && (
         <p className="text-red-500 mb-4" role="alert">
           {error}
@@ -145,7 +152,7 @@ export default function SearchPage() {
               <div className="flex items-center mb-4">
                 <Image
                   src={
-                    book.volumeInfo.imageLinks?.thumbnail || "/placeholder.png"
+                    book.volumeInfo.imageLinks?.thumbnail || '/placeholder.png'
                   }
                   alt={book.volumeInfo.title}
                   width={80}
@@ -157,7 +164,7 @@ export default function SearchPage() {
                     {book.volumeInfo.title}
                   </h2>
                   <p className="text-gray-600">
-                    {book.volumeInfo.authors?.join(", ")}
+                    {book.volumeInfo.authors?.join(', ')}
                   </p>
                   <p className="text-gray-500">
                     {book.volumeInfo.publishedDate}
@@ -179,34 +186,34 @@ export default function SearchPage() {
               <Image
                 src={
                   selectedBook?.volumeInfo.imageLinks?.thumbnail ||
-                  "/placeholder.png"
+                  '/placeholder.png'
                 }
-                alt={selectedBook?.volumeInfo.title || ""}
+                alt={selectedBook?.volumeInfo.title || ''}
                 width={200}
                 height={300}
                 className="object-cover mx-auto"
               />
               <p>
-                <strong>ISBN:</strong>{" "}
+                <strong>ISBN:</strong>{' '}
                 {
                   selectedBook?.volumeInfo.industryIdentifiers?.find(
-                    (id) => id.type === "ISBN_13"
+                    (id) => id.type === 'ISBN_13'
                   )?.identifier
                 }
               </p>
               <p>
-                <strong>Authors:</strong>{" "}
-                {selectedBook?.volumeInfo.authors?.join(", ")}
+                <strong>Authors:</strong>{' '}
+                {selectedBook?.volumeInfo.authors?.join(', ')}
               </p>
               <p>
-                <strong>Published:</strong>{" "}
+                <strong>Published:</strong>{' '}
                 {selectedBook?.volumeInfo.publishedDate}
               </p>
               <p>
                 <strong>Publisher:</strong> {selectedBook?.volumeInfo.publisher}
               </p>
               <p>
-                <strong>Description:</strong>{" "}
+                <strong>Description:</strong>{' '}
                 {selectedBook?.volumeInfo.description}
               </p>
             </div>
@@ -236,12 +243,12 @@ export default function SearchPage() {
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                "Add Book"
+                'Add Book'
               )}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }
