@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { SortAsc, SortDesc } from 'lucide-react'
+import Loading from '@/components/ui/loading'
 
 export default function Page() {
   const ITEMS_PER_PAGE = 12
@@ -117,11 +118,7 @@ export default function Page() {
   )
 
   if (isLoading) {
-    return <div>Loading...</div>
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>
+    return <Loading />
   }
 
   return (
@@ -131,6 +128,7 @@ export default function Page() {
         <Button asChild className="mb-6">
           <Link href={'/search'}>検索画面へ</Link>
         </Button>
+        {error && <div>Error: {error}</div>}
         <div className="mb-4 flex flex-wrap gap-4 items-center justify-between">
           <Input
             placeholder="検索..."
