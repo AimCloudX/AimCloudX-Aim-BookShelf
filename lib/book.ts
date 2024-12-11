@@ -9,3 +9,16 @@ export interface Book {
   location: string
   ownerId: string
 }
+
+export interface BookFromGoogle {
+  id: string
+  volumeInfo: {
+    title: string
+    authors: string[]
+    publishedDate: string
+    industryIdentifiers: { type: string; identifier: string }[]
+    imageLinks?: { thumbnail: string }
+    description: string
+    publisher: string
+  }
+}
