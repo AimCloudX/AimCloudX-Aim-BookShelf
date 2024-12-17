@@ -141,7 +141,7 @@ export default function SearchPage() {
               className="flex-grow"
               aria-label="Search query"
             />
-            <Button onClick={searchBooks} disabled={isLoading}>
+            <Button disabled={isLoading}>
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
