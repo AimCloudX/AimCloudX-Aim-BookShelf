@@ -20,11 +20,12 @@ import {
 } from '@/components/ui/select'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Loader2 } from 'lucide-react'
+import { Camera, Loader2 } from 'lucide-react'
 import { BookFromGoogle } from '@/lib/book'
 import isISBN from '@/lib/isbn'
 import { toast } from '@/hooks/use-toast'
 import { Toaster } from '@/components/ui/toaster'
+import CameraApp from '@/components/ui/camera'
 
 export default function SearchPage() {
   const [query, setQuery] = useState('')
@@ -34,6 +35,7 @@ export default function SearchPage() {
   const [ownerId, setOwnerId] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showCamera, setShowCamera] = useState(false)
 
   const searchBooks = async () => {
     if (!query.trim()) {
@@ -124,6 +126,14 @@ export default function SearchPage() {
     setQuery(value)
   }
 
+  const handleCamera = () => {
+    setShowCamera(!showCamera)
+  }
+
+  const handleReadCode = (code: string) => {
+    setQuery(code)
+  }
+
   return (
     <>
       <div className="container mx-auto px-4 py-8">
@@ -150,6 +160,14 @@ export default function SearchPage() {
             </Button>
           </div>
         </form>
+        <Button disabled={isLoading} onClick={handleCamera}>
+          {isLoading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Camera className="mr-2 h-4 w-4" />
+          )}
+        </Button>
+        {showCamera && <CameraApp onReadCode={handleReadCode} />}
         {error && (
           <p className="text-red-500 mb-4" role="alert">
             {error}
