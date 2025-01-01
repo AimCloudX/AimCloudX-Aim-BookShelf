@@ -73,6 +73,7 @@ export default function SearchPage() {
         title: 'Add Book Error',
         description: '本の場所を選択してください',
       })
+      console.log(location)
       return
     }
     setError('')
@@ -112,7 +113,7 @@ export default function SearchPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [toast])
+  }, [selectedBook, location, ownerId])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
