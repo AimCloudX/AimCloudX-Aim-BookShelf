@@ -1,21 +1,15 @@
 import isISBN from '@/lib/isbn'
 import { BookFromGoogle } from '@/lib/book'
 
-export interface FetchBooksResult {
-    books?: BookFromGoogle[]
-    error?: {
-        title: string
-        description: string
-    }
-}
+// export interface FetchBooksResult {
+//     books?: BookFromGoogle[];
+//     error?: string;
+// }
 
-async function FetchBooks (query: string): Promise<FetchBooksResult> {
-    if(!query.trim()){
+export async function FetchBooks (query?: string): Promise<{books: BookFromGoogle[]} | {error: string}> {
+    if(!query?.trim()){
         return {
-            error: {
-                title: 'Search Book Error',
-                description: '検索条件を入力してください',
-            }
+            error: '検索条件を入力してください',
         }
     }
 
@@ -32,13 +26,8 @@ async function FetchBooks (query: string): Promise<FetchBooksResult> {
         return {books: data.items || []}
     } catch  {
         return {
-            error: {
-                title: 'Search Book Error',
-                description: '検索中にエラーが発生しました。もう一度お試しください。',
-            }
+            error: '検索中にエラーが発生しました。もう一度お試しください。',
         }
     }
 //clientでsetError setIsLoading setBooks toast を変更
 } 
-
-export default FetchBooks;
