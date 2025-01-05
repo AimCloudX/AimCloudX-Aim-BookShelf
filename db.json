@@ -148,15 +148,16 @@
       "ownerId": "s"
     },
     {
-      "id": "604b",
-      "title": "世界のねこ",
+      "id": "f402",
+      "title": "ソフトウェアテスト見積りガイドブック",
       "authors": [
-        "ジェニファー・プリング"
+        "情報処理推進機構ソフトウェアエンジニアリングセンター",
+        "情報処理推進機構ソフトウェア・エンジニアリング・センター"
       ],
-      "isbn": "9784861527333",
-      "thumbnail": "http://books.google.com/books/content?id=XLnOxgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "isbn": "9784274501982",
+      "thumbnail": "http://books.google.com/books/content?id=JEmNPgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
       "location": "owner",
-      "ownerId": "テスト"
+      "ownerId": "あｓｄｆ"
     }
   ]
 }

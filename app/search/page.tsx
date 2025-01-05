@@ -1,5 +1,5 @@
-import {SearchClient} from "./searchClient"
-import { FetchBooks } from "./executeQuery"
+import {SearchClient} from "./components/searchClient"
+import { FetchBooks } from "./components/executeQuery"
 
 
 export default function SearchPage(){
