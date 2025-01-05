@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useCallback, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -33,7 +33,6 @@ export function SearchClient({FetchBooks}: FetchProps) {
         setIsLoading(true)
         setError(null)
 
-        // hadlesubumit止めてserver actionを使用する方法もある
         try {
             const data = await FetchBooks(query)
             if('books' in data) {
@@ -52,53 +51,53 @@ export function SearchClient({FetchBooks}: FetchProps) {
         }
     }
 
-    const addBook = async () => {
-        if(!selectedBook || !location) {
+    const addBook = useCallback(async () => {
+        if (!selectedBook || !location) {
             toast({
-                title: 'Add Book Error',
-                description: '本の場所を選択してください',
+            title: 'Add Book Error',
+            description: '本の場所を選択してください',
             })
+            console.log(location)
             return
         }
+        setError('')
+        setIsLoading(true)
 
         const bookData = {
             title: selectedBook.volumeInfo.title,
             authors: selectedBook.volumeInfo.authors,
-            isbn: selectedBook.volumeInfo.industryIdentifiers?.find(
+            isbn:
+            selectedBook.volumeInfo.industryIdentifiers?.find(
                 (id) => id.type === 'ISBN_13'
             )?.identifier || '',
             thumbnail: selectedBook.volumeInfo.imageLinks?.thumbnail || '',
             location,
             ownerId: ownerId.trim() || null,
         }
-      
-        setIsLoading(true)
+
         try {
-        const response = await fetch('/api/addBook', {
+            const response = await fetch('http://localhost:3001/books', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bookData),
-        })
-        if (!response.ok) {
+            })
+            if (!response.ok) {
             throw new Error('Failed to add book')
-        }
-        setSelectedBook(null)
-        setLocation('')
-        setOwnerId('')
-        toast({
-            title: 'Book Added',
-            description: '本が正常に追加されました',
-        })
-        } catch {
-        toast({
+            }
+            setSelectedBook(null)
+            setLocation('')
+            setOwnerId('')
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            toast({
             title: 'Add Book Error',
-            description: '本の追加中にエラーが発生しました。もう一度お試しください。',
-        })
+            description:
+                '本の追加中にエラーが発生しました。もう一度お試しください。',
+            })
         } finally {
-        setIsLoading(false)
+            setIsLoading(false)
         }
-
-    }
+    }, [selectedBook, location, ownerId])
 
     return (
         <>

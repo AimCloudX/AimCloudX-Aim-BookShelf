@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import FetchBooks from '../../executeQuery'
+import { FetchBooks } from '../../search/executeQuery'
 
 export async function POST(request: Request) {
     const body = await request.json()

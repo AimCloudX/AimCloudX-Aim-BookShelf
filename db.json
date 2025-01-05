@@ -146,6 +146,17 @@
       "thumbnail": "http://books.google.com/books/content?id=-YK3DwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
       "location": "bookshelf",
       "ownerId": "s"
+    },
+    {
+      "id": "604b",
+      "title": "世界のねこ",
+      "authors": [
+        "ジェニファー・プリング"
+      ],
+      "isbn": "9784861527333",
+      "thumbnail": "http://books.google.com/books/content?id=XLnOxgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "location": "owner",
+      "ownerId": "テスト"
     }
   ]
 }

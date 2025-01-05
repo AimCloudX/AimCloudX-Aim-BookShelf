@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import FetchBooks from '../../executeQuery';
+import FetchBooks from '../../search/executeQuery';
 
 export async function GET(request: Request) {
     // urlオブジェクトでurlを解析
