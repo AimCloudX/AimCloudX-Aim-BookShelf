@@ -1,10 +1,7 @@
+'use server'
+
 import isISBN from '@/lib/isbn'
 import { BookFromGoogle } from '@/lib/book'
-
-// export interface FetchBooksResult {
-//     books?: BookFromGoogle[];
-//     error?: string;
-// }
 
 export async function FetchBooks (query?: string): Promise<{books: BookFromGoogle[]} | {error: string}> {
     if(!query?.trim()){
@@ -23,8 +20,10 @@ export async function FetchBooks (query?: string): Promise<{books: BookFromGoogl
             throw new Error('API request failed')
         }
         const data = await response.json()
+        console.log('success')
         return {books: data.items || []}
     } catch  {
+        console.log('server error')
         return {
             error: '検索中にエラーが発生しました。もう一度お試しください。',
         }

@@ -13,7 +13,6 @@ import { toast } from '@/hooks/use-toast'
 import { Toaster } from '@/components/ui/toaster'
 import { BookFromGoogle } from '@/lib/book'
 
-
 interface FetchProps {
     FetchBooks: (query?: string) => Promise<{books: BookFromGoogle[]} | {error: string}>;
 }
@@ -27,8 +26,9 @@ export function SearchClient({FetchBooks}: FetchProps) {
     const [location, setLocation] = useState('')
     const [ownerId, setOwnerId] = useState('')
 
-
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    //action={formAction}はnext.jsでないと使用できない。
+    //今回のawsアーキテクチャではonSubmit={formAction}を使用する
+    const formAction = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setIsLoading(true)
         setError(null)
@@ -51,10 +51,6 @@ export function SearchClient({FetchBooks}: FetchProps) {
             setIsLoading(false)
         }
     }
-
-    // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //     setQuery(e.target.value)
-    // }
 
     const addBook = async () => {
         if(!selectedBook || !location) {
@@ -109,7 +105,7 @@ export function SearchClient({FetchBooks}: FetchProps) {
             <Button asChild className="mb-4">
                 <Link href={'/'}>トップ画面へ</Link>
             </Button>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formAction}>
                 <div className="flex gap-4 mb-6">
                 <Input
                     type="text"
