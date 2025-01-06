@@ -7,7 +7,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
 import { toast } from '@/hooks/use-toast'
 import { Toaster } from '@/components/ui/toaster'
@@ -101,9 +100,6 @@ export function SearchClient({FetchBooks}: FetchProps) {
 
     return (
         <>
-            <Button asChild className="mb-4">
-                <Link href={'/'}>トップ画面へ</Link>
-            </Button>
             <form onSubmit={formAction}>
                 <div className="flex gap-4 mb-6">
                 <Input
