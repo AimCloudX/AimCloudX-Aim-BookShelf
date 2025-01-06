@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
-export function TransitHome() {
+export function TransitionToHome() {
     return (
         <Button asChild className="mb-4">
         <Link href={'/'}>トップ画面へ</Link>
