@@ -37,7 +37,7 @@ export default function Page() {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch('http://localhost:3001/books')
+      const response = await fetch('/api/books')
       if (!response.ok) {
         throw new Error('Failed to fetch books')
       }
@@ -50,10 +50,6 @@ export default function Page() {
       setIsLoading(false)
     }
   }, [])
-
-  useEffect(() => {
-    fetchBooks()
-  }, [fetchBooks])
 
   const deleteBook = useCallback(
     async (id: Key) => {
@@ -82,6 +78,9 @@ export default function Page() {
     },
     [toast]
   )
+  useEffect(() => {
+    fetchBooks()
+  }, [fetchBooks])
 
   useEffect(() => {
     let result = [...books]
