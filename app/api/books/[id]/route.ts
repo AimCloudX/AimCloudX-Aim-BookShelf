@@ -16,6 +16,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
+    console.error(error)
     return new Response(JSON.stringify({ error: 'Error deleting book' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
