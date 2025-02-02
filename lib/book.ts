@@ -3,11 +3,15 @@ import { Key } from 'react'
 export interface Book {
   id: Key
   title: string
-  authors: string[]
+  authors: Author[]
   isbn: string
   thumbnail: string
   location: string
   ownerId: string
+}
+
+export interface Author {
+  name: string
 }
 
 export interface BookFromGoogle {

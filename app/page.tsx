@@ -94,7 +94,7 @@ export default function Page() {
         (book) =>
           book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           book.authors?.some((author) =>
-            author.toLowerCase().includes(searchTerm.toLowerCase())
+            author.name.toLowerCase().includes(searchTerm.toLowerCase())
           )
       )
     }

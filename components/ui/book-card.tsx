@@ -36,7 +36,9 @@ const BookCard = ({
         />
         <div>
           <h2 className="text-xl font-semibold">{book.title}</h2>
-          <p className="text-gray-600">{book.authors?.join(', ')}</p>
+          <p className="text-gray-600">
+            {book.authors?.map((x) => x.name).join(', ')}
+          </p>
           <p className="text-gray-500">{book.isbn}</p>
         </div>
       </div>
