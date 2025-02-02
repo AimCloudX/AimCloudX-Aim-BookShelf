@@ -24,11 +24,11 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   const prisma = new PrismaClient()
 
   try {
-    const { title, isbn, thumbnail, location, authors } = await request.json()
+    const { title, isbn, thumbnail, location, authors } = await req.json()
 
     // 新しい本を作成
     const newBook = await prisma.book.create({
