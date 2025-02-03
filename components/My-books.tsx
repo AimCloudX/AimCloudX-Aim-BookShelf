@@ -1,19 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Book, Instance, Review } from '../types';
+import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
+import { SortAsc, SortDesc } from 'lucide-react'
+
 
 const MyBooksPage = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [instances, setInstances] = useState<Instance[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [filter, setFilter] = useState('all');
-   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+
+  // Filter,sort関連
+  const [filterStatus, setFilterStatus] = useState('all'); //purchased or reviewed or all
+  const [sortField, setSortField] = useState<keyof Book>('title')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+  const [searchTerm, setSearchTerm] = useState('') //検索キーワード
+  //本棚展開用変数
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const [booksRes, instancesRes, reviewsRes] = await Promise.all([
       axios.get('http://localhost:3001/books'),
       axios.get('http://localhost:3001/instances'),
@@ -23,9 +35,35 @@ const MyBooksPage = () => {
     setBooks(booksRes.data);
     setInstances(instancesRes.data);
     setReviews(reviewsRes.data);
-  };
+  }, []);
 
-const getPurchaseInfo = (bookId: string) => {
+
+  useEffect(() => {
+    let result = [...books]
+
+    if (searchTerm) {
+      result = result.filter(
+        (book) =>
+          book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.authors?.some((author) =>
+            author.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+      )
+    }
+    const compare = (a: Book, b: Book) => {
+      const bookA = a[sortField]
+      const bookB = b[sortField]
+      if (bookA < bookB) return sortDirection === 'asc' ? -1 : 1
+      if (bookA > bookB) return sortDirection === 'asc' ? 1 : -1
+      return 0
+    }
+    result.sort(compare)
+
+    setFilteredBooks(result)
+  }, [books, filterStatus, searchTerm, sortField, sortDirection])
+
+  //modalで使用
+  const getPurchaseInfo = (bookId: string) => {
     return instances.filter(instance => instance.id === bookId);
   };
 
@@ -33,27 +71,58 @@ const getPurchaseInfo = (bookId: string) => {
     return reviews.filter(review => review.id === bookId);
   };
 
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">本棚</h1>
-      <div className="mb-4">
+      <div className="mb-4 flex flex-wrap gap-4 items-center justify-between">
         <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
           className="border p-2 rounded"
         >
           <option value="all">すべて</option>
           <option value="purchased">購入済み</option>
           <option value="reviewed">レビュー済み</option>
         </select>
+        <Input
+            placeholder="検索..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-w-xs"
+          />
+          <Select
+            value={sortField}
+            onValueChange={(value: keyof Book) => setSortField(value)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="ソート" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="title">タイトル</SelectItem>
+              <SelectItem value="authors">著者</SelectItem>
+              <SelectItem value="isbn10">ISBN10</SelectItem>
+              <SelectItem value="isbn13">ISBN13</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() =>
+              setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+            }
+          >
+            {sortDirection === 'asc' ? <SortAsc /> : <SortDesc />}
+          </Button>
       </div>
+
       <div className="grid grid-cols-3 gap-4">
-        {books
+        {filteredBooks
           .filter((book) => {
-            if (filter === 'purchased') {
+            if (filterStatus === 'purchased') {
               return instances.some((instance) => instance.id === book.id);
             }
-            if (filter === 'reviewed') {
+            if (filterStatus === 'reviewed') {
               return reviews.some((review) => review.id === book.id);
             }
             return true;
@@ -76,6 +145,7 @@ const getPurchaseInfo = (bookId: string) => {
             </div>
           ))}
       </div>
+    
       {selectedBook && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-1/2">
