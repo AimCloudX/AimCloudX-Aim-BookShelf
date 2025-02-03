@@ -1,7 +1,8 @@
 'use client'
 import { useState } from 'react'
 import axios from 'axios'
-import { BookFromGoogle, Book, BookInstance, Author } from '@/lib/book'
+import { BookFromGoogle, Book, BookAuthors } from '@/lib/book'
+import Image from 'next/image';
 
 const SearchPage = () => {
   const [keyword, setKeyword] = useState('')
@@ -23,7 +24,7 @@ const SearchPage = () => {
     setBooks(response.data.items)
   }
 
-  const openModal = (book: any) => {
+  const openModal = (book: BookFromGoogle) => {
     setSelectedBook(book)
     setShowModal(true)
   }
@@ -41,16 +42,16 @@ const SearchPage = () => {
       bookId: selectedBook.id,
       title: selectedBook.volumeInfo.title,
       thumbnail: selectedBook.volumeInfo.imageLinks?.thumbnail || '',
-      authors: selectedBook.volumeInfo.authors.map((x) => new Author(x)),
       content: selectedBook.volumeInfo.description || '',
       isbn10:
-        selectedBook.volumeInfo.industryIdentifiers?.find(
-          (id: any) => id.type === 'ISBN_10'
-        )?.identifier || '',
+      selectedBook.volumeInfo.industryIdentifiers?.find(
+        ({ type }: { type: string }) => type === 'ISBN_10'
+      )?.identifier || '',
       isbn13:
-        selectedBook.volumeInfo.industryIdentifiers?.find(
-          (id: any) => id.type === 'ISBN_13'
-        )?.identifier || '',
+      selectedBook.volumeInfo.industryIdentifiers?.find(
+        ({ type }: { type: string }) => type === 'ISBN_13'
+      )?.identifier || '',
+      bookAuthors: selectedBook.volumeInfo.authors.map((x) => new BookAuthors(x)),
       instances: [],
       reviews: [
         {
@@ -64,7 +65,7 @@ const SearchPage = () => {
     closeModal()
   }
 
-  const openInstanceModal = (book: any) => {
+  const openInstanceModal = (book: BookFromGoogle) => {
     setSelectedBook(book)
     setShowInstanceModal(true)
   }
@@ -84,16 +85,16 @@ const SearchPage = () => {
       bookId: selectedBook.id,
       title: selectedBook.volumeInfo.title,
       thumbnail: selectedBook.volumeInfo.imageLinks?.thumbnail || '',
-      authors: selectedBook.volumeInfo.authors.map((x) => new Author(x)),
       content: selectedBook.volumeInfo.description || '',
       isbn10:
-        selectedBook.volumeInfo.industryIdentifiers?.find(
-          (id: any) => id.type === 'ISBN_10'
-        )?.identifier || '',
+      selectedBook.volumeInfo.industryIdentifiers?.find(
+        ({ type }: { type: string }) => type === 'ISBN_10'
+      )?.identifier || '',
       isbn13:
-        selectedBook.volumeInfo.industryIdentifiers?.find(
-          (id: any) => id.type === 'ISBN_13'
-        )?.identifier || '',
+      selectedBook.volumeInfo.industryIdentifiers?.find(
+        ({ type }: { type: string }) => type === 'ISBN_13'
+      )?.identifier || '',
+      bookAuthors: selectedBook.volumeInfo.authors.map((x) => new BookAuthors(x)),
       instances: [
         {
           bookId: selectedBook.id,
@@ -128,8 +129,8 @@ const SearchPage = () => {
       <div className="grid grid-cols-3 gap-4">
         {books.map((book) => (
           <div key={book.id} className="border p-4 rounded">
-            <img
-              src={book.volumeInfo.imageLinks?.thumbnail}
+            <Image
+              src={book.volumeInfo.imageLinks?.thumbnail || '/default-image.jpg'}
               alt={book.volumeInfo.title}
               className="w-32 mx-auto"
             />

@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { SortAsc, SortDesc } from 'lucide-react'
+import Image from 'next/image';
+
 const MyBooksPage = () => {
   const [books, setBooks] = useState<Book[]>([])
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
@@ -123,7 +125,7 @@ const MyBooksPage = () => {
                 className="border p-4 rounded cursor-pointer"
                 onClick={() => setSelectedBook(book)}
               >
-                <img
+                <Image
                   src={book.thumbnail}
                   alt={book.title}
                   className="w-32 mx-auto"

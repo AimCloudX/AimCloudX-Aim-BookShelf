@@ -13,20 +13,22 @@ export interface Book {
   reviews: Review[]
 }
 
-export interface Author {
-  name: string
-}
-
-export interface BookAuthors
-{
-  bookId: string
-  authorId: string
-  author: Author
-}
-
-export class Author implements Author {
+export class Author {
+  name: string;
   constructor(name: string) {
-    this.name = name
+    this.name = name;
+  }
+}
+
+export class BookAuthors {
+  bookId: string;
+  authorId: string;
+  author: Author;
+
+  constructor(authorName: string) {
+    this.bookId = '';
+    this.authorId = '';
+    this.author = new Author(authorName);
   }
 }
 

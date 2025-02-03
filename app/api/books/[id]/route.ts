@@ -9,14 +9,16 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     const bookWithAuthors = await prisma.book.findUnique({
       where: { id },
       include: {
-        authors: true,
+        bookAuthors: {
+          include: { author: true },
+        },
       },
     });
 
     if (bookWithAuthors) {
-      for (const author of bookWithAuthors.authors) {
+      for (const author of bookWithAuthors.bookAuthors) {
         await prisma.author.delete({
-          where: { id: author.id },
+          where: { id: author.author.id },
         });
       }
 
@@ -44,6 +46,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       );
     }
   } catch (error) {
+    console.error(error)
     return new Response(
       JSON.stringify({ error: 'Error deleting book and authors' }),
       {

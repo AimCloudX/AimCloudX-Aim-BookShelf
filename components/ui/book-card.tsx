@@ -2,7 +2,7 @@ import { Book } from '@/lib/book'
 import { Key } from 'react'
 import { Card, CardContent, CardFooter } from './card'
 import Image from 'next/image'
-import { Badge } from './badge'
+// import { Badge } from './badge'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,11 +37,12 @@ const BookCard = ({
         <div>
           <h2 className="text-xl font-semibold">{book.title}</h2>
           <p className="text-gray-600">
-            {book.authors?.map((x) => x.name).join(', ')}
+            {book.bookAuthors?.map(({ author: { name } }) => name).join(', ')}
           </p>
-          <p className="text-gray-500">{book.isbn}</p>
+          <p className="text-gray-500">{book.isbn13}</p>
         </div>
       </div>
+      {/* TODO: 仕様変更に伴って、Viewも変える
       <div className="flex justify-between items-center">
         <Badge
           variant={book.location === 'bookshelf' ? 'default' : 'secondary'}
@@ -53,7 +54,7 @@ const BookCard = ({
             所有者ID: {book.ownerId?.toString()}
           </span>
         )}
-      </div>
+      </div> */}
     </CardContent>
     <CardFooter>
       <AlertDialog>
