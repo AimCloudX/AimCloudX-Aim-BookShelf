@@ -13,18 +13,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// book
 model Book {
-  id        String    @id @default(cuid())
+  id        String          @id @default(cuid())
+  bookId    String          @unique
   title     String
-  isbn      String?
   thumbnail String
-  location  String
   authors   Author[]
+  isbn10    String?
+  isbn13    String?
+  content   String          @db.Text
+
+  // Book と BookInstance は 1 対多
+  instances BookInstance[]
+  // Book と Review は 1 対多
+  reviews   Review[]
 }
 
 model Author {
   id    String  @id @default(cuid())
   name  String
   books Book[]
+}
+
+model BookInstance {
+  id          String   @id @default(cuid())
+  bookId      String
+  // Book の主キー（id）と関連付ける
+  book        Book     @relation(fields: [bookId], references: [id])
+  purchaser   String
+  purchaseAt  DateTime
+  location    String
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  bookId    String
+  // Book の主キー（id）と関連付ける
+  book      Book     @relation(fields: [bookId], references: [id])
+  reader    String
+  content   String   @db.Text
 }

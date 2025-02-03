@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Book, Instance, Review } from '../types'
+import { Book } from '@/lib/book'
 
 const MyBooksPage = () => {
   const [books, setBooks] = useState<Book[]>([])
-  const [instances, setInstances] = useState<Instance[]>([])
-  const [reviews, setReviews] = useState<Review[]>([])
   const [filter, setFilter] = useState('all')
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
 
@@ -14,23 +12,11 @@ const MyBooksPage = () => {
   }, [])
 
   const fetchData = async () => {
-    const [booksRes, instancesRes, reviewsRes] = await Promise.all([
-      axios.get('http://localhost:3001/books'),
-      axios.get('http://localhost:3001/instances'),
-      axios.get('http://localhost:3001/reviews'),
-    ])
+    const response = await axios.get('/api/books')
 
-    setBooks(booksRes.data)
-    setInstances(instancesRes.data)
-    setReviews(reviewsRes.data)
-  }
-
-  const getPurchaseInfo = (bookId: string) => {
-    return instances.filter((instance) => instance.id === bookId)
-  }
-
-  const getReviews = (bookId: string) => {
-    return reviews.filter((review) => review.id === bookId)
+    const  books  = response.data
+    console.log(books)
+    setBooks(books)
   }
 
   return (
@@ -48,13 +34,13 @@ const MyBooksPage = () => {
         </select>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        {books
+        {!!books && books
           .filter((book) => {
             if (filter === 'purchased') {
-              return instances.some((instance) => instance.id === book.id)
+              return book.instances.length > 0
             }
             if (filter === 'reviewed') {
-              return reviews.some((review) => review.id === book.id)
+              return book.reviews.length > 0
             }
             return true
           })
@@ -70,7 +56,7 @@ const MyBooksPage = () => {
                 className="w-32 mx-auto"
               />
               <h2 className="font-bold mt-2">{book.title}</h2>
-              <p className="text-sm text-gray-600">{book.authors.join(', ')}</p>
+              <p className="text-sm text-gray-600">{book.authors.map(x=>x.name).join(', ')}</p>
             </div>
           ))}
       </div>
@@ -79,14 +65,14 @@ const MyBooksPage = () => {
           <div className="bg-white p-6 rounded shadow-lg w-1/2">
             <h2 className="text-xl font-bold">{selectedBook.title}</h2>
             <p className="text-sm text-gray-600">
-              {selectedBook.authors.join(', ')}
+              {selectedBook.authors.map(x=>x.name).join(', ')}
             </p>
             <h3 className="mt-4 font-semibold">購入情報</h3>
-            {getPurchaseInfo(selectedBook.id).length > 0 ? (
+            {selectedBook.instances.length > 0 ? (
               <ul>
-                {getPurchaseInfo(selectedBook.id).map((instance, index) => (
+                {selectedBook.instances.map((instance, index) => (
                   <li key={index}>
-                    購入者: {instance.purchaser} - {instance.purchaseDate}
+                    購入者: {instance.purchaser} - {instance.purchaseAt.getDate()} - {instance.location}
                   </li>
                 ))}
               </ul>
@@ -94,11 +80,11 @@ const MyBooksPage = () => {
               <p>購入情報なし</p>
             )}
             <h3 className="mt-4 font-semibold">レビュー</h3>
-            {getReviews(selectedBook.id).length > 0 ? (
+            {selectedBook.reviews.length > 0 ? (
               <ul>
-                {getReviews(selectedBook.id).map((review, index) => (
+                {selectedBook.reviews.map((review, index) => (
                   <li key={index}>
-                    {review.reviewer}: {review.comment}
+                    {review.reader}: {review.content}
                   </li>
                 ))}
               </ul>

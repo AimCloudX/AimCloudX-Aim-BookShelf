@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-
+import { Author } from '@/lib/book'
+import { PrismaClient } from '@prisma/client'
 
 export async function GET() {
   const prisma = new PrismaClient()
@@ -7,6 +7,8 @@ export async function GET() {
     const books = await prisma.book.findMany({
       include: {
         authors: true,
+        instances: true,
+        reviews: true,
       },
     })
     return new Response(JSON.stringify(books), {
@@ -28,25 +30,98 @@ export async function POST(req: Request) {
   const prisma = new PrismaClient()
 
   try {
-    const { title, isbn, thumbnail, location, authors } = await req.json()
+    const {
+      bookId,
+      title,
+      thumbnail,
+      authors,
+      content,
+      isbn10,
+      isbn13,
+      instances,
+      reviews,
+    } = await req.json()
 
-    // 新しい本を作成
-    const newBook = await prisma.book.create({
-      data: {
-        title,
-        isbn,
-        thumbnail,
-        location,
-        authors: {
-          create: authors.map((author: string) => ({ name: author })),
+    const existingBook = await prisma.book.findUnique({
+      where: { bookId },
+    })
+
+    if (!existingBook) {
+      // 新しい本を作成
+      const newBook = await prisma.book.create({
+        data: {
+          bookId,
+          title,
+          thumbnail,
+          authors: {
+            create: authors.map((author: Author) => ({ name: author.name })),
+          },
+          content,
+          isbn10,
+          isbn13,
+          instances: {
+            create: instances.map(
+              (instance: {
+                purchaser: string
+                purchaseAt: string
+                location: string
+              }) => ({
+                purchaser: instance.purchaser,
+                purchaseAt: new Date(instance.purchaseAt),
+                location: instance.location,
+              })
+            ),
+          },
+          reviews: {
+            create: reviews.map(
+              (review: { reader: string; content: string }) => ({
+                reader: review.reader,
+                content: review.content,
+              })
+            ),
+          },
         },
-      },
-    })
-
-    return new Response(JSON.stringify(newBook), {
-      status: 201,
-      headers: { 'Content-Type': 'application/json' },
-    })
+        include: {
+          authors: true,
+          instances: true,
+          reviews: true,
+        },
+      })
+      console.log(newBook)
+      return new Response(JSON.stringify(newBook), {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    } else {
+      const updatedBook = await prisma.book.update({
+        where: { bookId: existingBook.bookId },
+        data: {
+          instances: {
+            create: instances.map((instance: { purchaser: string; purchaseAt: string; location: string }) => ({
+              purchaser: instance.purchaser,
+              purchaseAt: new Date(instance.purchaseAt),
+              location: instance.location,
+            })),
+          },
+          reviews: {
+            create: reviews.map((review: { reader: string; content: string }) => ({
+              reader: review.reader,
+              content: review.content,
+            })),
+          },
+        },
+        include: {
+          authors: true,
+          instances: true,
+          reviews: true,
+        },
+      });
+      console.log(updatedBook)
+      return new Response(JSON.stringify(updatedBook), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
   } catch (error) {
     console.error(error)
     return new Response(JSON.stringify({ error: 'Error creating book' }), {

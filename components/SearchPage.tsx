@@ -1,13 +1,13 @@
 'use client'
 import { useState } from 'react'
 import axios from 'axios'
-import { Book, Instance } from '../types'
+import { BookFromGoogle, Book, BookInstance, Author } from '@/lib/book'
 
 const SearchPage = () => {
   const [keyword, setKeyword] = useState('')
-  const [books, setBooks] = useState<any[]>([])
+  const [books, setBooks] = useState<BookFromGoogle[]>([])
   const [showModal, setShowModal] = useState(false)
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
+  const [selectedBook, setSelectedBook] = useState<BookFromGoogle | null>(null)
   const [reviewer, setReviewer] = useState('')
   const [comment, setComment] = useState('')
 
@@ -37,10 +37,11 @@ const SearchPage = () => {
   const saveComment = async () => {
     if (!selectedBook) return
     const book: Book = {
-      id: selectedBook.id,
+      id: '',
+      bookId: selectedBook.id,
       title: selectedBook.volumeInfo.title,
       thumbnail: selectedBook.volumeInfo.imageLinks?.thumbnail || '',
-      authors: selectedBook.volumeInfo.authors || [],
+      authors: selectedBook.volumeInfo.authors.map((x) => new Author(x)),
       content: selectedBook.volumeInfo.description || '',
       isbn10:
         selectedBook.volumeInfo.industryIdentifiers?.find(
@@ -50,19 +51,16 @@ const SearchPage = () => {
         selectedBook.volumeInfo.industryIdentifiers?.find(
           (id: any) => id.type === 'ISBN_13'
         )?.identifier || '',
+      instances: [],
+      reviews: [
+        {
+          bookId: selectedBook.id,
+          reader: reviewer,
+          content: comment,
+        },
+      ],
     }
-
-    const response = await axios.get(`http://localhost:3001/books/`)
-    if (response.data.some((b: Book) => b.id === book.id)) {
-    } else {
-      await axios.post('http://localhost:3001/books', book)
-    }
-    await axios.post('http://localhost:3001/reviews', {
-      id: book.id,
-      reviewer,
-      comment,
-    })
-
+    await axios.post('/api/books', book)
     closeModal()
   }
 
@@ -82,10 +80,11 @@ const SearchPage = () => {
     if (!selectedBook) return
 
     const book: Book = {
-      id: selectedBook.id,
+      id: '',
+      bookId: selectedBook.id,
       title: selectedBook.volumeInfo.title,
       thumbnail: selectedBook.volumeInfo.imageLinks?.thumbnail || '',
-      authors: selectedBook.volumeInfo.authors || [],
+      authors: selectedBook.volumeInfo.authors.map((x) => new Author(x)),
       content: selectedBook.volumeInfo.description || '',
       isbn10:
         selectedBook.volumeInfo.industryIdentifiers?.find(
@@ -95,21 +94,17 @@ const SearchPage = () => {
         selectedBook.volumeInfo.industryIdentifiers?.find(
           (id: any) => id.type === 'ISBN_13'
         )?.identifier || '',
+      instances: [
+        {
+          bookId: selectedBook.id,
+          purchaser: purchaser,
+          purchaseAt: new Date(purchaseDate + 'T00:00:00Z'),
+          location: location,
+        },
+      ],
+      reviews: [],
     }
-
-    const instance: Instance = {
-      id: book.id,
-      purchaser,
-      purchaseDate,
-      location,
-    }
-    const response = await axios.get(`http://localhost:3001/books/`)
-    if (response.data.some((b: Book) => b.id === book.id)) {
-    } else {
-      await axios.post('http://localhost:3001/books', book)
-    }
-
-    await axios.post('http://localhost:3001/instances', instance)
+    await axios.post('/api/books', book)
     closeInstanceModal()
   }
 
