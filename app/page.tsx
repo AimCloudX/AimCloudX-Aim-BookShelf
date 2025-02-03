@@ -1,23 +1,23 @@
 'use client'
-import { useState } from "react";
-import SearchPage from "../components/SearchPage";
-import MyBooksPage from "../components/My-books";
+import { useState } from 'react'
+import SearchPage from '../components/SearchPage'
+import MyBooksPage from '../components/My-books'
 
 export default function Page() {
   // 現在選択されているタブを管理
-  const [activeTab, setActiveTab] = useState("myBooks");
+  const [activeTab, setActiveTab] = useState('myBooks')
 
   // 各タブに対応するコンポーネント
   const renderContent = () => {
     switch (activeTab) {
-      case "search":
-        return <SearchPage />;
-      case "myBooks":
-        return <MyBooksPage />;
+      case 'search':
+        return <SearchPage />
+      case 'myBooks':
+        return <MyBooksPage />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -27,17 +27,17 @@ export default function Page() {
       <nav className="flex gap-4 mb-4">
         <button
           className={`text-blue-500 hover:underline ${
-            activeTab === "myBooks" ? "font-bold underline" : ""
+            activeTab === 'myBooks' ? 'font-bold underline' : ''
           }`}
-          onClick={() => setActiveTab("myBooks")}
+          onClick={() => setActiveTab('myBooks')}
         >
           本棚
         </button>
         <button
           className={`text-blue-500 hover:underline ${
-            activeTab === "search" ? "font-bold underline" : ""
+            activeTab === 'search' ? 'font-bold underline' : ''
           }`}
-          onClick={() => setActiveTab("search")}
+          onClick={() => setActiveTab('search')}
         >
           書籍検索
         </button>
@@ -46,5 +46,5 @@ export default function Page() {
       {/* タブに応じたコンテンツを表示 */}
       <div>{renderContent()}</div>
     </div>
-  );
+  )
 }
