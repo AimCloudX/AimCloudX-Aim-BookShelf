@@ -1,4 +1,3 @@
-import { Author } from '@/lib/book'
 import { PrismaClient } from '@prisma/client'
 
 export async function GET() {
@@ -6,7 +5,9 @@ export async function GET() {
   try {
     const books = await prisma.book.findMany({
       include: {
-        authors: true,
+        bookAuthors: {
+          include: { author: true },
+        },
         instances: true,
         reviews: true,
       },
@@ -53,12 +54,19 @@ export async function POST(req: Request) {
           bookId,
           title,
           thumbnail,
-          authors: {
-            create: authors.map((author: Author) => ({ name: author.name })),
-          },
           content,
           isbn10,
           isbn13,
+          bookAuthors:{
+            create: authors.map((author: { name: string }) => ({
+              author: {
+                connectOrCreate: {
+                  where: { name: author.name },
+                  create: { name: author.name },
+                },
+              },
+            })),
+          },
           instances: {
             create: instances.map(
               (instance: {
@@ -82,7 +90,9 @@ export async function POST(req: Request) {
           },
         },
         include: {
-          authors: true,
+          bookAuthors: {
+            include: { author: true },
+          },
           instances: true,
           reviews: true,
         },
@@ -111,7 +121,9 @@ export async function POST(req: Request) {
           },
         },
         include: {
-          authors: true,
+          bookAuthors: {
+            include: { author: true },
+          },
           instances: true,
           reviews: true,
         },

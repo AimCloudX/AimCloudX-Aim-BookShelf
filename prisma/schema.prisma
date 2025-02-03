@@ -18,28 +18,36 @@ model Book {
   bookId    String          @unique
   title     String
   thumbnail String
-  authors   Author[]
   isbn10    String?
   isbn13    String?
   content   String          @db.Text
 
-  // Book と BookInstance は 1 対多
   instances BookInstance[]
-  // Book と Review は 1 対多
   reviews   Review[]
+  bookAuthors BookAuthor[]
 }
 
 model Author {
   id    String  @id @default(cuid())
-  name  String
-  books Book[]
+  name  String  @unique
+  
+  bookAuthors BookAuthor[]
+}
+
+model BookAuthor {
+  book    Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId  String
+
+  author  Author @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+
+  @@id([bookId, authorId])
 }
 
 model BookInstance {
   id          String   @id @default(cuid())
   bookId      String
-  // Book の主キー（id）と関連付ける
-  book        Book     @relation(fields: [bookId], references: [id])
+  book        Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   purchaser   String
   purchaseAt  DateTime
   location    String
@@ -48,8 +56,7 @@ model BookInstance {
 model Review {
   id        String   @id @default(cuid())
   bookId    String
-  // Book の主キー（id）と関連付ける
-  book      Book     @relation(fields: [bookId], references: [id])
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   reader    String
   content   String   @db.Text
 }

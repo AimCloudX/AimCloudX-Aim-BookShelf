@@ -2,15 +2,22 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Book } from '@/lib/book'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { SortAsc, SortDesc } from 'lucide-react'
 const MyBooksPage = () => {
   const [books, setBooks] = useState<Book[]>([])
-  const [filter, setFilter] = useState('all')
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
   // Filter,sort関連
-  const [filterStatus, setFilterStatus] = useState('all'); //purchased or reviewed or all
+  const [filterStatus, setFilterStatus] = useState<
+    'purchased' | 'reviewed' | 'all'
+  >('all')
   const [sortField, setSortField] = useState<keyof Book>('title')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
   const [searchTerm, setSearchTerm] = useState('') //検索キーワード
@@ -24,7 +31,7 @@ const MyBooksPage = () => {
   const fetchData = async () => {
     const response = await axios.get('/api/books')
 
-    const  books  = response.data
+    const books = response.data
     console.log(books)
     setBooks(books)
   }
@@ -36,8 +43,9 @@ const MyBooksPage = () => {
       result = result.filter(
         (book) =>
           book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          book.authors?.some((author) =>
-            author.name.toLowerCase().includes(searchTerm.toLowerCase())
+          book.bookAuthors?.some(({ author: { name } }) => name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
           )
       )
     }
@@ -59,7 +67,7 @@ const MyBooksPage = () => {
       <div className="mb-4 flex flex-wrap gap-4 items-center justify-between">
         <select
           value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
+          onChange={(e) => setFilterStatus(e.target.value as 'purchased' | 'reviewed' | 'all')}
           className="border p-2 rounded"
         >
           <option value="all">すべて</option>
@@ -67,77 +75,85 @@ const MyBooksPage = () => {
           <option value="reviewed">レビュー済み</option>
         </select>
         <Input
-            placeholder="検索..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-xs"
-          />
-          <Select
-            value={sortField}
-            onValueChange={(value: keyof Book) => setSortField(value)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="ソート" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="title">タイトル</SelectItem>
-              <SelectItem value="authors">著者</SelectItem>
-              <SelectItem value="isbn10">ISBN10</SelectItem>
-              <SelectItem value="isbn13">ISBN13</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() =>
-              setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
-            }
-          >
-            {sortDirection === 'asc' ? <SortAsc /> : <SortDesc />}
-          </Button>
+          placeholder="検索..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="max-w-xs"
+        />
+        <Select
+          value={sortField}
+          onValueChange={(value: keyof Book) => setSortField(value)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="ソート" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="title">タイトル</SelectItem>
+            <SelectItem value="authors">著者</SelectItem>
+            <SelectItem value="isbn10">ISBN10</SelectItem>
+            <SelectItem value="isbn13">ISBN13</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() =>
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+          }
+        >
+          {sortDirection === 'asc' ? <SortAsc /> : <SortDesc />}
+        </Button>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        {!!books && books
-          .filter((book) => {
-            if (filter === 'purchased') {
-              return book.instances.length > 0
-            }
-            if (filter === 'reviewed') {
-              return book.reviews.length > 0
-            }
-            return true
-          })
-          .map((book) => (
-            <div
-              key={book.id}
-              className="border p-4 rounded cursor-pointer"
-              onClick={() => setSelectedBook(book)}
-            >
-              <img
-                src={book.thumbnail}
-                alt={book.title}
-                className="w-32 mx-auto"
-              />
-              <h2 className="font-bold mt-2">{book.title}</h2>
-              <p className="text-sm text-gray-600">{book.authors.map(x=>x.name).join(', ')}</p>
-            </div>
-          ))}
+        {!!filteredBooks &&
+          filteredBooks
+            .filter((book) => {
+              if (filterStatus === 'purchased') {
+                return book.instances.length > 0
+              }
+              if (filterStatus === 'reviewed') {
+                return book.reviews.length > 0
+              }
+              return true
+            })
+            .map((book) => (
+              <div
+                key={book.id}
+                className="border p-4 rounded cursor-pointer"
+                onClick={() => setSelectedBook(book)}
+              >
+                <img
+                  src={book.thumbnail}
+                  alt={book.title}
+                  className="w-32 mx-auto"
+                />
+                <h2 className="font-bold mt-2">{book.title}</h2>
+                <p className="text-sm text-gray-600">
+                  {book.bookAuthors
+                    .map(({ author: { name } }) => name)
+                    .join(', ')}
+                </p>
+              </div>
+            ))}
       </div>
-    
+
       {selectedBook && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-1/2">
             <h2 className="text-xl font-bold">{selectedBook.title}</h2>
             <p className="text-sm text-gray-600">
-              {selectedBook.authors.map(x=>x.name).join(', ')}
+              {selectedBook.bookAuthors
+                .map(({ author: { name } }) => name)
+                .join(', ')}
             </p>
             <h3 className="mt-4 font-semibold">購入情報</h3>
             {selectedBook.instances.length > 0 ? (
               <ul>
                 {selectedBook.instances.map((instance, index) => (
                   <li key={index}>
-                    購入者: {instance.purchaser} - {instance.purchaseAt.getDate()} - {instance.location}
+                    購入者: {instance.purchaser} -{' '}
+                    {instance.purchaseAt.getDate()} - {instance.location}
                   </li>
                 ))}
               </ul>

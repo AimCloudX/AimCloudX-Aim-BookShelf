@@ -4,17 +4,24 @@ export interface Book {
   id: Key
   bookId: string
   title: string
-  authors: Author[]
   thumbnail: string
   content: string
   isbn10: string
   isbn13: string
+  bookAuthors: BookAuthors[]
   instances: BookInstance[]
   reviews: Review[]
 }
 
 export interface Author {
   name: string
+}
+
+export interface BookAuthors
+{
+  bookId: string
+  authorId: string
+  author: Author
 }
 
 export class Author implements Author {
