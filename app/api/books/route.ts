@@ -35,10 +35,10 @@ export async function POST(req: Request) {
       bookId,
       title,
       thumbnail,
-      authors,
       content,
       isbn10,
       isbn13,
+      bookAuthors,
       instances,
       reviews,
     } = await req.json()
@@ -57,8 +57,8 @@ export async function POST(req: Request) {
           content,
           isbn10,
           isbn13,
-          bookAuthors:{
-            create: authors.map((author: { name: string }) => ({
+          bookAuthors: {
+            create: bookAuthors.map((author: { name: string }) => ({
               author: {
                 connectOrCreate: {
                   where: { name: author.name },
@@ -107,17 +107,25 @@ export async function POST(req: Request) {
         where: { bookId: existingBook.bookId },
         data: {
           instances: {
-            create: instances.map((instance: { purchaser: string; purchaseAt: string; location: string }) => ({
-              purchaser: instance.purchaser,
-              purchaseAt: new Date(instance.purchaseAt),
-              location: instance.location,
-            })),
+            create: instances.map(
+              (instance: {
+                purchaser: string
+                purchaseAt: string
+                location: string
+              }) => ({
+                purchaser: instance.purchaser,
+                purchaseAt: new Date(instance.purchaseAt),
+                location: instance.location,
+              })
+            ),
           },
           reviews: {
-            create: reviews.map((review: { reader: string; content: string }) => ({
-              reader: review.reader,
-              content: review.content,
-            })),
+            create: reviews.map(
+              (review: { reader: string; content: string }) => ({
+                reader: review.reader,
+                content: review.content,
+              })
+            ),
           },
         },
         include: {
@@ -127,12 +135,12 @@ export async function POST(req: Request) {
           instances: true,
           reviews: true,
         },
-      });
+      })
       console.log(updatedBook)
       return new Response(JSON.stringify(updatedBook), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
-      });
+      })
     }
   } catch (error) {
     console.error(error)
