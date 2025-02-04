@@ -1,3 +1,4 @@
+import { BookAuthors } from '@/lib/book'
 import { PrismaClient } from '@prisma/client'
 
 export async function GET() {
@@ -48,7 +49,6 @@ export async function POST(req: Request) {
     })
 
     if (!existingBook) {
-      // 新しい本を作成
       const newBook = await prisma.book.create({
         data: {
           bookId,
@@ -58,11 +58,11 @@ export async function POST(req: Request) {
           isbn10,
           isbn13,
           bookAuthors: {
-            create: bookAuthors.map((author: { name: string }) => ({
+            create: bookAuthors.map((bookAuthor: BookAuthors) => ({
               author: {
                 connectOrCreate: {
-                  where: { name: author.name },
-                  create: { name: author.name },
+                  where: { name: bookAuthor.author.name },
+                  create: { name: bookAuthor.author.name },
                 },
               },
             })),

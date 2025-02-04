@@ -5,6 +5,7 @@ import { BookFromGoogle, Book, BookAuthors } from '@/lib/book'
 import Image from 'next/image';
 
 const SearchPage = () => {
+  const NO_AUTHORS = [new BookAuthors('no authors')]
   const [keyword, setKeyword] = useState('')
   const [books, setBooks] = useState<BookFromGoogle[]>([])
   const [showModal, setShowModal] = useState(false)
@@ -51,7 +52,7 @@ const SearchPage = () => {
       selectedBook.volumeInfo.industryIdentifiers?.find(
         ({ type }: { type: string }) => type === 'ISBN_13'
       )?.identifier || '',
-      bookAuthors: selectedBook.volumeInfo.authors.map((x) => new BookAuthors(x)),
+      bookAuthors: selectedBook.volumeInfo.authors?.map((x) => new BookAuthors(x)) ?? NO_AUTHORS,
       instances: [],
       reviews: [
         {
@@ -94,7 +95,7 @@ const SearchPage = () => {
       selectedBook.volumeInfo.industryIdentifiers?.find(
         ({ type }: { type: string }) => type === 'ISBN_13'
       )?.identifier || '',
-      bookAuthors: selectedBook.volumeInfo.authors.map((x) => new BookAuthors(x)),
+      bookAuthors: selectedBook.volumeInfo.authors?.map((x) => new BookAuthors(x)) ?? NO_AUTHORS,
       instances: [
         {
           bookId: selectedBook.id,
@@ -132,6 +133,8 @@ const SearchPage = () => {
             <Image
               src={book.volumeInfo.imageLinks?.thumbnail || '/default-image.jpg'}
               alt={book.volumeInfo.title}
+              width={100}
+              height={200}
               className="w-32 mx-auto"
             />
             <h2 className="font-bold mt-2">{book.volumeInfo.title}</h2>

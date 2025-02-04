@@ -128,6 +128,8 @@ const MyBooksPage = () => {
                 <Image
                   src={book.thumbnail}
                   alt={book.title}
+                  width={100}
+                  height={200}
                   className="w-32 mx-auto"
                 />
                 <h2 className="font-bold mt-2">{book.title}</h2>
