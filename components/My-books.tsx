@@ -12,8 +12,10 @@ import {
 import { Button } from '@/components/ui/button'
 import { SortAsc, SortDesc } from 'lucide-react'
 import Image from 'next/image';
+import Loading from './ui/loading'
 
 const MyBooksPage = () => {
+  const ITEMS_PER_PAGE = 12
   const [books, setBooks] = useState<Book[]>([])
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
   // Filter,sort関連
@@ -26,9 +28,16 @@ const MyBooksPage = () => {
   //本棚展開用変数
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+  const [isLoading, setIsLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const compare = (a: Book, b: Book) => {
+    const bookA = a[sortField]
+    const bookB = b[sortField]
+    if (bookA < bookB) return sortDirection === 'asc' ? -1 : 1
+    if (bookA > bookB) return sortDirection === 'asc' ? 1 : -1
+    return 0
+  }
 
   const fetchData = async () => {
     const response = await axios.get('/api/books')
@@ -38,6 +47,10 @@ const MyBooksPage = () => {
     setBooks(books)
   }
 
+  useEffect(() => {
+    fetchData().finally(()=>setIsLoading(false))
+  }, [])
+  
   useEffect(() => {
     let result = [...books]
 
@@ -51,17 +64,22 @@ const MyBooksPage = () => {
           )
       )
     }
-    const compare = (a: Book, b: Book) => {
-      const bookA = a[sortField]
-      const bookB = b[sortField]
-      if (bookA < bookB) return sortDirection === 'asc' ? -1 : 1
-      if (bookA > bookB) return sortDirection === 'asc' ? 1 : -1
-      return 0
-    }
+
     result.sort(compare)
 
     setFilteredBooks(result)
   }, [books, filterStatus, searchTerm, sortField, sortDirection])
+
+  const pageCount = Math.ceil(filteredBooks.length / ITEMS_PER_PAGE)
+  const displayedBooks = filteredBooks.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  )
+
+  if(isLoading)
+  {
+    return <Loading/>
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -108,8 +126,8 @@ const MyBooksPage = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        {!!filteredBooks &&
-          filteredBooks
+        {!!displayedBooks &&
+          displayedBooks
             .filter((book) => {
               if (filterStatus === 'purchased') {
                 return book.instances.length > 0
@@ -140,6 +158,19 @@ const MyBooksPage = () => {
                 </p>
               </div>
             ))}
+      </div>
+
+      <div className="mt-4 flex justify-center space-x-2">
+        {Array.from({ length: pageCount }, (_, i) => i + 1).map((page) => (
+          <Button
+            key={page}
+            variant={currentPage === page ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setCurrentPage(page)}
+          >
+            {page}
+          </Button>
+        ))}
       </div>
 
       {selectedBook && (
