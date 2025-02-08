@@ -8,7 +8,7 @@ export interface Book {
   content: string
   isbn10: string
   isbn13: string
-  bookAuthors: BookAuthors[]
+  bookAuthors: BookAuthor[]
   instances: BookInstance[]
   reviews: Review[]
 }
@@ -20,7 +20,7 @@ export class Author {
   }
 }
 
-export class BookAuthors {
+export class BookAuthor {
   bookId: string;
   authorId: string;
   author: Author;

@@ -1,4 +1,4 @@
-import { BookAuthors } from '@/lib/book'
+import { BookAuthor } from '@/lib/book'
 import { PrismaClient } from '@prisma/client'
 
 export async function GET() {
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
           isbn10,
           isbn13,
           bookAuthors: {
-            create: bookAuthors.map((bookAuthor: BookAuthors) => ({
+            create: bookAuthors.map((bookAuthor: BookAuthor) => ({
               author: {
                 connectOrCreate: {
                   where: { name: bookAuthor.author.name },
@@ -97,7 +97,6 @@ export async function POST(req: Request) {
           reviews: true,
         },
       })
-      console.log(newBook)
       return new Response(JSON.stringify(newBook), {
         status: 201,
         headers: { 'Content-Type': 'application/json' },
@@ -136,7 +135,6 @@ export async function POST(req: Request) {
           reviews: true,
         },
       })
-      console.log(updatedBook)
       return new Response(JSON.stringify(updatedBook), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
