@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 
 export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const prisma = new PrismaClient()
   const { id } = params
   const data = await request.json()
   const updatedBook = await prisma.book.update({

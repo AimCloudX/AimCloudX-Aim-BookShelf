@@ -1,8 +1,7 @@
 import { BookAuthor } from '@/lib/book'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 
 export async function GET() {
-  const prisma = new PrismaClient()
   try {
     const books = await prisma.book.findMany({
       include: {
@@ -29,8 +28,6 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const prisma = new PrismaClient()
-
   try {
     const {
       bookId,
