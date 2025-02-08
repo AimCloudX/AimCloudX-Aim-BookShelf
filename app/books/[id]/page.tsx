@@ -1,8 +1,7 @@
 import BookDetailActions from '@/components/ui/BookDetailActions'
 import { Book } from '@/lib/book'
 import axios from 'axios'
-import { notFound, useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { notFound } from 'next/navigation'
 
 interface PageProps {
   params: {

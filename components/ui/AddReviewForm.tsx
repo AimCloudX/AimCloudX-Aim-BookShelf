@@ -27,7 +27,7 @@ export default function AddReviewForm({
       setReader('')
       setContent('')
       onSuccess()
-    } catch (err: any) {
+    } catch (err) {
       console.error(err)
       setError('レビューの追加に失敗しました。')
     }

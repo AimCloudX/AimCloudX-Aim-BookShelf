@@ -136,8 +136,8 @@ const MyBooksPage = () => {
               }
               return true
             })
-            .map((book) => (
-              <Link href={'/books/' + book.id}>
+            .map((book, index) => (
+              <Link key={index} href={'/books/' + book.id}>
                 <Card
                   key={book.id}
                   className="border p-4 rounded cursor-pointer"

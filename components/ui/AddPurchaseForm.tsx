@@ -31,7 +31,7 @@ export default function AddPurchaseForm({
       setPurchaseAt('')
       setLocation('')
       onSuccess()
-    } catch (err: any) {
+    } catch (err) {
       console.error(err)
       setError('購入情報の追加に失敗しました。')
     }
