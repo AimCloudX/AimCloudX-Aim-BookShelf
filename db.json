@@ -1,86 +1,81 @@
 {
   "books": [
     {
-      "id": "735a",
-      "title": "日本鉄道車輌工業史",
+      "id": "gzuUDwAAQBAJ",
+      "title": "ウィトゲンシュタイン　論理哲学論考　シリーズ世界の思想",
+      "thumbnail": "http://books.google.com/books/content?id=gzuUDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
       "authors": [
-        "沢井実"
+        "古田　徹也"
       ],
-      "isbn": "あああ",
-      "thumbnail": "http://books.google.com/books/content?id=w_61AAAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-      "location": "bookshelf"
+      "content": "ウィトゲンシュタインは、哲学の問題すべてを一挙に解決するという、哲学史上でも最高度に野心的な試みを遂行した。著者生前唯一の哲学書を、これ以上ないほど明解に、初学者にやさしく解説した画期的入門書！",
+      "isbn10": "",
+      "isbn13": ""
     },
     {
-      "id": "fb91",
-      "title": "React.js 超入門",
+      "id": "Lh5yEAAAQBAJ",
+      "title": "ウィトゲンシュタインと言語の限界",
+      "thumbnail": "http://books.google.com/books/content?id=Lh5yEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
       "authors": [
-        "掌田津耶乃"
+        "ピエール・アド",
+        "合田正人",
+        "古田徹也"
       ],
-      "isbn": "",
-      "thumbnail": "http://books.google.com/books/content?id=Cq8pEQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-      "location": "bookshelf"
+      "content": "本書の著者ピエール・アド（1922-2010年）は、古代ギリシア思想や新プラトン主義の研究者として、コレージュ・ド・フランス教授を務めました。その著作は、古代哲学のみならず、フランシス・ベーコンやデカルトなどの17世紀思想、ゲーテ、ヘーゲルからニーチェ、ベルクソン、ハイデガーに至る19～20世紀の思想まで、幅広い知識に裏打ちされた類を見ない豊饒さをそなえています。その著作はヨーロッパの知識人に大きな影響を与えるとともに、アメリカでも多くの読者を獲得してきました。 ところが、日本では2020年に『イシスのヴェール』（法政大学出版局）が出版されるまで、訳書は1冊も存在せず、それゆえ注目を浴びることもなかったというのは、豊かな翻訳文化を育ててきた国では奇妙な欠落だったと言わざるをえません。2021年には『生き方としての哲学』（法政大学出版局）の邦訳が出版され、ようやく日本でもこの碩学の思想に触れる準備が整いつつあります。今こそ、アドがフランスで初めて本格的にウィトゲンシュタインを紹介した人物でもあること、そして唯一無二の解釈を残していたことを伝える本書を読むべき時だと言うことができるでしょう。 研究者にさえ顧みられずにきた本書に収められた論考は、『論理哲学論考』と『哲学探究』しか出版されていなかった時期に書かれたものにもかかわらず、後続の者が見出すことのできなかった側面を明確に浮かび上がらせるものにほかなりません。アドは深い教養に導かれて、ウィトゲンシュタインの思想の中に古代のストア派や懐疑主義、新プラトン主義とのつながりを、あるいはショーペンハウアーとのつながりを見て取ります。その結果、ウィトゲンシュタインの著作は独自の「哲学」を記述しただけのものでなく、第一級の「哲学史」でもあることを明らかにするのです。 本訳書では、アドの解釈の画期性をよりよく理解できるよう、気鋭のウィトゲンシュタイン研究者である古田徹也氏の重厚な「解説」を収録しました。さらに「訳者後記」では、合田正人氏がアドという人物を中心にした知的ネットワークの広大さを深い思い入れとともに綴っています。本書の中で、これまで知らなかったウィトゲンシュタインの顔を見ることができるでしょう。 今後のウィトゲンシュタイン研究にも大きな一石を投じることになる重要著作の邦訳を選書メチエの1冊としてお届けいたします。 ［本書の内容］ 序 ウィトゲンシュタイン『論理哲学論考』における言語の限界についての考察 ウィトゲンシュタイン 言語の哲学者 I ウィトゲンシュタイン 言語の哲学者 II 言語ゲームと哲学 解説 ウィトゲンシュタイン哲学の「新しい」相貌（古田徹也） 訳者後記",
+      "isbn10": "",
+      "isbn13": ""
     },
     {
-      "id": "5a6a",
-      "title": "Complete Communication Book 2 – Intermediate – / コミュニケーションのための実践演習 Book 2 〈中級編〉",
+      "id": "18dkj-e6858C",
+      "title": "運動・認知機能改善へのアプローチ",
+      "thumbnail": "http://books.google.com/books/content?id=18dkj-e6858C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
       "authors": [
-        "James Bury",
-        "Anthony Sellick",
-        "堀内香織"
+        "藤原勝夫"
       ],
-      "isbn": "9784791972425",
-      "thumbnail": "http://books.google.com/books/content?id=t-65zgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-      "location": "owner"
+      "content": "This book introduces a number of health problems related to children and the elderly including their rehabilitation and research to solve those problems. It may also assist in finding and approaching a solution to problems such as lack of exercise and loss of intellectual abilities in children and elderly.",
+      "isbn10": "4902109115",
+      "isbn13": "9784902109115"
     },
     {
-      "id": "ab00",
-      "title": "Next.js超入門",
+      "id": "M4F6QgAACAAJ",
+      "title": "シュガーマンのマーケティング30の法則",
+      "thumbnail": "http://books.google.com/books/content?id=M4F6QgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
       "authors": [
-        "掌田津耶乃"
+        "ジョセフ・シュガーマン"
       ],
-      "isbn": "",
-      "thumbnail": "http://books.google.com/books/content?id=80TxEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-      "location": "bookshelf"
+      "content": "アメリカ伝説のマーケッター、幻の名著「Triggers」ついに邦訳!",
+      "isbn10": "4894512203",
+      "isbn13": "9784894512207"
+    }
+  ],
+  "instances": [
+    {
+      "id": "gzuUDwAAQBAJ",
+      "purchaser": "ジョン",
+      "purchaseDate": "2025-02-05",
+      "location": "自宅"
     },
     {
-      "id": "09c3",
-      "title": "ISBN - Internationale Standard-Buchnummer",
-      "authors": [
-        " Walravens, Hartmut"
-      ],
-      "isbn": "9783940862211",
-      "thumbnail": "http://books.google.com/books/content?id=i1lrYuczMUMC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-      "location": "bookshelf"
+      "id": "M4F6QgAACAAJ",
+      "purchaser": "ステフ",
+      "purchaseDate": "",
+      "location": "本社"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "Lh5yEAAAQBAJ",
+      "reviewer": "ジョン",
+      "comment": "OK"
     },
     {
-      "id": "5098",
-      "title": "Livres de France",
-      "isbn": "",
-      "thumbnail": "http://books.google.com/books/content?id=q8gkAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-      "location": "owner"
+      "id": "gzuUDwAAQBAJ",
+      "reviewer": "ジョン",
+      "comment": "読んだ"
     },
     {
-      "id": "b72b",
-      "title": "世界のねこ",
-      "authors": [
-        "ジェニファー・プリング"
-      ],
-      "isbn": "9784861527333",
-      "thumbnail": "http://books.google.com/books/content?id=XLnOxgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-      "location": "bookshelf",
-      "ownerId": "あｓｄｆ"
-    },
-    {
-      "id": "8f04",
-      "title": "ときめく猫図鑑",
-      "authors": [
-        "なかのひろみ",
-        "福田豊文"
-      ],
-      "isbn": "9784635049474",
-      "thumbnail": "http://books.google.com/books/content?id=JxyczwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-      "location": "owner",
-      "ownerId": "ひらの"
+      "id": "18dkj-e6858C",
+      "reviewer": "キャサリン",
+      "comment": "よんでない"
     }
   ]
 }
