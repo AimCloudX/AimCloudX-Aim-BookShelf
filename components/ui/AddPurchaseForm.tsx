@@ -78,8 +78,8 @@ export default function AddPurchaseForm({
       <button
         type="submit"
         className={clsx(
-          "text-center mx-auto py-1 px-4 font-bold border-2 border-[#27acd9] text-[#27acd9] cursor-pointer relative overflow-hidden transition-colors duration-300",
-          "before:absolute before:left-0 before:top-0 before:w-full before:h-full before:bg-[#27acd9] before:-translate-x-full before:transition-transform before:duration-300",
+          "relative text-center mx-auto py-1 px-4 font-bold border-2 border-[#27acd9] text-[#27acd9] cursor-pointer overflow-hidden transition-colors duration-300 z-[1]",
+          "before:absolute before:left-0 before:top-0 before:w-full before:h-full before:bg-[#27acd9] before:-translate-x-full before:transition-transform before:duration-300 before:z-[-1]",
           "hover:text-white hover:before:translate-x-0"
         )}
       >
