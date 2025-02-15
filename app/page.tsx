@@ -29,7 +29,6 @@ const MyBooksPage = () => {
   const [searchTerm, setSearchTerm] = useState('') //検索キーワード
   //本棚展開用変数
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
-
   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
 

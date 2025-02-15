@@ -58,5 +58,6 @@ model Review {
   bookId    String
   book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   reader    String
+  reviewAt  DateTime @default(now()) 
   content   String   @db.Text
 }
