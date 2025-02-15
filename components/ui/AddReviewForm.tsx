@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import axios from 'axios'
+import clsx from 'clsx'
 
 interface AddReviewFormProps {
   bookId: string
@@ -15,6 +16,7 @@ export default function AddReviewForm({
   const [reader, setReader] = useState('')
   const [content, setContent] = useState('')
   const [error, setError] = useState('')
+  const [reviewAt, setReviewAt] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,6 +29,7 @@ export default function AddReviewForm({
       setReader('')
       setContent('')
       onSuccess()
+      setReviewAt('')
     } catch (err) {
       console.error(err)
       setError('レビューの追加に失敗しました。')
@@ -36,7 +39,7 @@ export default function AddReviewForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gray-100 p-4 rounded-lg shadow-md mt-4"
+      className="bg-gray-100 p-4 rounded-lg shadow-md w-full"
     >
       <h3 className="text-lg font-semibold mb-2">レビューを追加</h3>
       {error && <p className="text-red-500 mb-2">{error}</p>}
@@ -46,6 +49,16 @@ export default function AddReviewForm({
           type="text"
           value={reader}
           onChange={(e) => setReader(e.target.value)}
+          className="w-full border border-gray-300 rounded p-2"
+          required
+        />
+      </div>
+      <div className="mb-2">
+        <label className="block text-gray-700">レビュー日</label>
+        <input
+          type="date"
+          value={reviewAt}
+          onChange={(e) => setReviewAt(e.target.value)}
           className="w-full border border-gray-300 rounded p-2"
           required
         />
@@ -61,10 +74,16 @@ export default function AddReviewForm({
       </div>
       <button
         type="submit"
-        className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        className={clsx(
+          "text-center mx-auto py-1 px-4 font-bold border-2 border-[#27acd9] text-[#27acd9] cursor-pointer relative overflow-hidden transition-colors duration-300",
+          "before:absolute before:left-0 before:top-0 before:w-full before:h-full before:bg-[#27acd9] before:-translate-x-full before:transition-transform before:duration-300",
+          "hover:text-white hover:before:translate-x-0"
+        )}
       >
         追加する
       </button>
+
     </form>
+    
   )
 }
