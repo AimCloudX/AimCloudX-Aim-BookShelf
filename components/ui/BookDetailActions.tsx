@@ -16,7 +16,7 @@ export default function BookDetailActions({ bookId }: BookDetailActionsProps) {
   };
 
   return (
-    <div className="mt-8 space-x-8 flex justify-center mt-[10px]">
+    <div className="mt-8 space-y-8">
       <AddPurchaseForm bookId={bookId} onSuccess={handleSuccess} />
       <AddReviewForm bookId={bookId} onSuccess={handleSuccess} />
     </div>
