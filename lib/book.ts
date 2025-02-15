@@ -55,6 +55,5 @@ export interface BookInstance {
 export interface Review {
   bookId: Key
   reader: string
-  reviewAt: Date
   content: string
 }

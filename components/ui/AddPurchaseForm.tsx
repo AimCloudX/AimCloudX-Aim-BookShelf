@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import axios from 'axios'
-import clsx from 'clsx'
 
 interface AddPurchaseFormProps {
   bookId: string
@@ -41,7 +40,7 @@ export default function AddPurchaseForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gray-100 p-4 rounded-lg shadow-md w-full"
+      className="bg-gray-100 p-4 rounded-lg shadow-md"
     >
       <h3 className="text-lg font-semibold mb-2">購入情報を追加</h3>
       {error && <p className="text-red-500 mb-2">{error}</p>}
@@ -71,17 +70,13 @@ export default function AddPurchaseForm({
           type="text"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="mb-8 w-full border border-gray-300 rounded p-2"
+          className="w-full border border-gray-300 rounded p-2"
           required
         />
       </div>
       <button
         type="submit"
-        className={clsx(
-          "relative text-center mx-auto py-1 px-4 font-bold border-2 border-[#27acd9] text-[#27acd9] cursor-pointer overflow-hidden transition-colors duration-300 z-[1]",
-          "before:absolute before:left-0 before:top-0 before:w-full before:h-full before:bg-[#27acd9] before:-translate-x-full before:transition-transform before:duration-300 before:z-[-1]",
-          "hover:text-white hover:before:translate-x-0"
-        )}
+        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
       >
         追加する
       </button>

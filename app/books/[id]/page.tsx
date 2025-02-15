@@ -1,4 +1,3 @@
-import { BookDetailInfo } from '@/components/BookDetailInfo'
 import BookDetailActions from '@/components/ui/BookDetailActions'
 import { Book } from '@/lib/book'
 import axios from 'axios'
@@ -20,69 +19,82 @@ export default async function BookDetailPage(props: PageProps) {
     return notFound()
   }
 
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="bg-white shadow-lg rounded-lg p-6">
-        <BookDetailInfo book={book}/>
+        <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
+          {book.title}
+        </h1>
+        <div className="flex flex-col md:flex-row">
+          {/* サムネイル画像 */}
+          <div className="md:w-1/3 flex justify-center mb-4 md:mb-0">
+            <img
+              src={book.thumbnail}
+              alt={book.title}
+              className="rounded-lg shadow-md w-full h-64 object-cover"
+            />
+          </div>
+          {/* 詳細情報 */}
+          <div className="md:w-2/3 md:pl-8">
+            <p className="text-gray-700 mb-4">{book.content}</p>
+            <div className="mb-4">
+              <p className="text-sm text-gray-500">
+                <span className="font-semibold">ISBN10:</span> {book.isbn10}
+              </p>
+              <p className="text-sm text-gray-500">
+                <span className="font-semibold">ISBN13:</span> {book.isbn13}
+              </p>
+            </div>
 
-        {/* 購入情報 */}
-        <section className="mb-6 mt-5">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-            購入情報
-          </h2>
-          <ul className="list-disc list-inside h-[100px] overflow-y-scroll overflow-hidden border-2 rounded p-2">
-            {book.instances
-              // 降順
-              .sort((instanceA, instanceB) => new Date(instanceB.purchaseAt).getTime() - new Date(instanceA.purchaseAt).getTime())
-              .map((instance, idx) => (
-                <li key={idx} className="text-gray-600">
-                  <span className='inline-block w-[200px]'>
-                    <span className='font-bold'>購入日:{' '}</span>{new Date(instance.purchaseAt).toLocaleDateString()}
-                  </span>
-                  <span className='inline-block w-[200px] h-[20px] overflow-hidden text-ellipsis white-space-nowrap'>
-                    <span className='font-bold'>購入者:{' '}</span>
-                    {instance.purchaser.length > 10 ? instance.purchaser.substring(0, 10) + '...' : instance.purchaser}
-                  </span>
-                  <span className='inline-block w-[300px]'>
-                    <span className='font-bold'>場所:{' '}</span>
-                    {instance.location.length > 20 ? instance.location.substring(0, 20) + '...' : instance.location}
-                  </span>              
-                </li>
-              ))}
-          </ul>
-        </section>
+            {/* 著者情報 */}
+            <section className="mb-6">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                著者
+              </h2>
+              <ul className="list-disc list-inside">
+                {book.bookAuthors.map((bookAuthor, idx) => (
+                  <li key={idx} className="text-gray-600">
+                    {bookAuthor.author.name}
+                  </li>
+                ))}
+              </ul>
+            </section>
 
-        {/* レビュー */}
-        <section>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-            レビュー
-          </h2>
-          <ul className="list-disc list-inside h-[100px] overflow-hidden overflow-y-scroll border-2 rounded p-2">
-            {book.reviews
-              // 降順
-              .sort((reviewA, reviewB) => new Date(reviewB.reviewAt).getTime() - new Date(reviewA.reviewAt).getTime())
-              .map((review, idx) => (
-                <li key={idx} className="text-gray-600">
-                  <span className='inline-block w-[200px]'>    
-                    <span className='font-bold'>レビュー日:{' '}</span>
-                    {new Date(review.reviewAt).toLocaleDateString()}
-                  </span> 
-                  <span className='inline-block w-[200px]'>
-                    <span className="font-bold">読者:{' '}</span>
-                    {review.reader.length > 20 ? review.reader.substring(0, 20) + '...' : review.reader}
-                  </span>
-                  <span className='inline-block w-[400px]'>
-                    <span className='font-bold'>内容:{' '}</span>
-                    {review.content.length > 20 ? review.content.substring(0, 30) + '...' : review.content}
-                  </span>
-                </li>
-              ))}
-          </ul>
-        </section>
-        <section className='mt-10'>
-        <BookDetailActions bookId={book.id.toString()} />
-        </section>
+            {/* 購入情報 */}
+            <section className="mb-6">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                購入情報
+              </h2>
+              <ul className="list-disc list-inside">
+                {book.instances.map((instance, idx) => (
+                  <li key={idx} className="text-gray-600">
+                    購入者: {instance.purchaser} | 購入日:{' '}
+                    {new Date(instance.purchaseAt).toLocaleDateString()} | 場所:{' '}
+                    {instance.location}
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            {/* レビュー */}
+            <section>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                レビュー
+              </h2>
+              <ul className="list-disc list-inside">
+                {book.reviews.map((review, idx) => (
+                  <li key={idx} className="text-gray-600">
+                    <span className="font-bold">{review.reader}</span>:{' '}
+                    {review.content}
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <section>
+            <BookDetailActions bookId={book.id.toString()} />
+            </section>
+          </div>
+        </div>
       </div>
     </div>
   )
